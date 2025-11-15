@@ -21,5 +21,23 @@
             }
             return true;
         }
+
+        public static double CalcularFactorial(double numero)
+        {
+            try
+            {
+                double factorialResultado = 1;
+                for (int i = 1; i <= numero; i++)
+                {
+                    factorialResultado *= i;
+                }
+                return factorialResultado;
+            }
+            catch (Exception ex)
+            {
+                throw new
+                Exception("Valor muy grande " + ex.Message);
+            }
+        }
     }
 }
