@@ -1,0 +1,47 @@
+﻿@model IEnumerable<appCore_T1_ejer02.Models.Libro>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Isbn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoLibro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isbn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoLibro)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Isbn }) |
+                @Html.ActionLink("Details", "Details", new {  id=item.Isbn }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Isbn })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
