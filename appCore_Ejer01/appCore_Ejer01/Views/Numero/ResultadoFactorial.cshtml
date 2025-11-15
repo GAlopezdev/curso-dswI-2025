@@ -1,0 +1,37 @@
+﻿@model appCore_Ejer01.Models.clsNumero
+
+@{
+    ViewData["Title"] = "Resultado Factorial";
+}
+
+<h1>Resultado del Factorial</h1>
+
+<div class="mt-4 p-3 border rounded border-primary">
+    <h4>Resultado:</h4>
+    <p>El número ingresado fue: **@Model.Numero**</p>
+
+    @if (Model.FactorialResultado == -1)
+    {
+        <p class="text-danger">
+            **¡ERROR!** El resultado del factorial de **@Model.Numero** es demasiado grande para ser representado (ocurrió desbordamiento).
+        </p>
+    }
+    else if (Model.FactorialResultado == 0 && Model.Numero < 0)
+    {
+        <p class="text-danger">
+            **ERROR:** El factorial solo se define para números no negativos.
+        </p>
+    }
+    else
+    {
+        <p>
+            El Factorial de **@Model.Numero** es:
+            <strong>@Model.FactorialResultado</strong>
+        </p>
+    }
+</div>
+
+<div class="mt-3">
+    <!--No olvide que tras mostrar el resultado este boton debe ir a la vista CalcularFactorial-->
+    <a asp-action="CalcularFactorial" class="btn btn-secondary">Volver a calcular</a>
+</div>
