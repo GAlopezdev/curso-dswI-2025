@@ -45,6 +45,29 @@ namespace ejerCore_T2_02.Controllers
 
         }
 
+        // Listado de Distritos para combo box
+        public IEnumerable<Distrito> cboDistritos()
+        {
+            List<Distrito> temporal = new List<Distrito>();
+
+            using (SqlConnection cn = new SqlConnection(_config.GetConnectionString("Infracciones")))
+            {
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("usp_ListarDistrito", cn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    temporal.Add(new Distrito()
+                    {
+                        Cod_distrito = dr.GetString(0),
+                        Nom_distrito = dr.GetString(1)
+                    });
+                }
+                dr.Close();
+            }
+            return temporal;
+        }
+
 
         public async Task<IActionResult> Index()
         {
