@@ -1,8 +1,10 @@
-﻿namespace ejerCore_T2_02.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ejerCore_T2_02.Models
 {
     public class Distrito
     {
-        public string Cod_distrito {  get; set; }   
-        public string Nom_distrito { get; set; }
+        [Display(Name = "Código")]public string Cod_distrito {  get; set; }   
+        [Display(Name = "Distrito")]public string Nom_distrito { get; set; }
     }
 }
