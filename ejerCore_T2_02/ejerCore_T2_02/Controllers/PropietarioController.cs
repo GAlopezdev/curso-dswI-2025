@@ -101,6 +101,12 @@ namespace ejerCore_T2_02.Controllers
             return mensaje;
         }
 
+        // Metodo para buscar propietario por Codigo
+        Propietario? buscarPropietario(string codigo)
+        {
+            return Listado().FirstOrDefault(p => p.Cod_Propietario == codigo);
+        }
+
         public async Task<IActionResult> Index()
         {
             return View(await Task.Run(()=> Listado()));
@@ -124,6 +130,11 @@ namespace ejerCore_T2_02.Controllers
             ViewBag.mensaje = mergePropietario(reg);
             ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito");
             return View(await Task.Run(() => reg));
+        }
+
+        public async Task<IActionResult> Edit(string codigo)
+        {
+            return View(await Task.Run(() => buscarPropietario(codigo)));
         }
     }
 }
