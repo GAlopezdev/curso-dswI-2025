@@ -68,6 +68,37 @@ namespace ejerCore_T2_02.Controllers
             return temporal;
         }
 
+        String mergePropietario(Propietario obj)
+        {
+            string mensaje = "";
+
+            using (SqlConnection cn = new SqlConnection(_config.GetConnectionString("Infracciones")))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("usp_MergePropietario", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Cod_Propietario", obj.Cod_Propietario);
+                    cmd.Parameters.AddWithValue("@Nom_Propietario", obj.Nom_Propietario);
+                    cmd.Parameters.AddWithValue("@Ape_Propietario", obj.Ape_Propietario);
+                    cmd.Parameters.AddWithValue("@Dir_Propietario", obj.Dir_Propietario);
+                    cmd.Parameters.AddWithValue("@DNI_Propietario", obj.DNI_Propietario);
+                    cmd.Parameters.AddWithValue("@Cod_Distrito", obj.Cod_Distrito);
+                    cn.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    mensaje = $"Se ha insertado {i} propietario.";
+                }
+                catch (SqlException ex)
+                {
+                    mensaje = ex.Message;
+                }
+                finally
+                { 
+                    cn.Close();
+                }
+            }
+            return mensaje;
+        }
 
         public async Task<IActionResult> Index()
         {
