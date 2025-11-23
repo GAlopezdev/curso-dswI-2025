@@ -2,6 +2,7 @@
 using ejerCore_T2_02.Models;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ejerCore_T2_02.Controllers
 {
     public class PropietarioController : Controller
@@ -103,6 +104,26 @@ namespace ejerCore_T2_02.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await Task.Run(()=> Listado()));
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito");
+            return View(await Task.Run(() => new Propietario()));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Propietario reg)
+        {
+            if (!ModelState.IsValid)
+            { 
+                ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito");
+                return View(await Task.Run(() => reg));
+            }
+
+            ViewBag.mensaje = mergePropietario(reg);
+            ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito");
+            return View(await Task.Run(() => reg));
         }
     }
 }
