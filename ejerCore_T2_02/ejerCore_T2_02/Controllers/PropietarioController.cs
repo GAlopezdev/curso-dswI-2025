@@ -134,7 +134,23 @@ namespace ejerCore_T2_02.Controllers
 
         public async Task<IActionResult> Edit(string codigo)
         {
+            if (codigo == null)
+                return RedirectToAction("Index");
             return View(await Task.Run(() => buscarPropietario(codigo)));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Propietario reg)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
+                return View(await Task.Run(() => reg));
+            }
+
+            ViewBag.mensaje = mergePropietario(reg);
+            ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
+            return View(await Task.Run(() => reg));
         }
     }
 }
