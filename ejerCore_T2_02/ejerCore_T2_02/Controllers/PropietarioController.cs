@@ -136,7 +136,11 @@ namespace ejerCore_T2_02.Controllers
         {
             if (codigo == null)
                 return RedirectToAction("Index");
-            return View(await Task.Run(() => buscarPropietario(codigo)));
+
+            Propietario? reg = buscarPropietario(codigo);
+            ViewBag.reg = reg.Cod_Distrito + reg.Cod_Propietario;
+            ViewBag.distritos = new SelectList(cboDistritos(), "Nom_distrito", "Nom_distrito", reg.Cod_Distrito);
+            return View(await Task.Run(() => reg));
         }
 
         [HttpPost]
@@ -144,12 +148,12 @@ namespace ejerCore_T2_02.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
+                ViewBag.distritos = new SelectList(cboDistritos(), "Nom_distrito", "Nom_distrito", reg.Cod_Distrito);
                 return View(await Task.Run(() => reg));
             }
 
             ViewBag.mensaje = mergePropietario(reg);
-            ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
+            ViewBag.distritos = new SelectList(cboDistritos(), "Nom_distrito", "Nom_distrito", reg.Cod_Distrito);
             return View(await Task.Run(() => reg));
         }
     }
