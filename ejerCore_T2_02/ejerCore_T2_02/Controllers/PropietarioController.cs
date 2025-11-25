@@ -69,6 +69,35 @@ namespace ejerCore_T2_02.Controllers
             return temporal;
         }
 
+        // Encontrar propietario por procedure
+        Propietario BuscarPropietario(string codigo)
+        { 
+            Propietario obj = new Propietario();
+
+            using (SqlConnection cn = new SqlConnection(_config.GetConnectionString("Infracciones")))
+            {
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("usp_ConsultarPropietario", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Cod_Propietario", codigo);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    obj = new Propietario()
+                    {
+                        Cod_Propietario = dr.GetString(0),
+                        Nom_Propietario = dr.GetString(1),
+                        Ape_Propietario = dr.GetString(2),
+                        Dir_Propietario = dr.GetString(3),
+                        DNI_Propietario = dr.GetString(4),
+                        Cod_Distrito = dr.GetString(5)
+                    };
+                }
+                dr.Close();
+            }
+            return obj;
+        }
+
         String mergePropietario(Propietario obj)
         {
             string mensaje = "";
@@ -102,10 +131,10 @@ namespace ejerCore_T2_02.Controllers
         }
 
         // Metodo para buscar propietario por Codigo
-        Propietario? buscarPropietario(string codigo)
+        /*Propietario? buscarPropietario(string codigo)
         {
             return Listado().FirstOrDefault(p => p.Cod_Propietario == codigo);
-        }
+        }*/
 
         public async Task<IActionResult> Index()
         {
@@ -137,9 +166,9 @@ namespace ejerCore_T2_02.Controllers
             if (codigo == null)
                 return RedirectToAction("Index");
 
-            Propietario? reg = buscarPropietario(codigo);
+            Propietario? reg = BuscarPropietario(codigo);
             ViewBag.reg = reg.Cod_Distrito + reg.Cod_Propietario;
-            ViewBag.distritos = new SelectList(cboDistritos(), "Nom_distrito", "Nom_distrito", reg.Cod_Distrito);
+            ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
             return View(await Task.Run(() => reg));
         }
 
@@ -148,12 +177,12 @@ namespace ejerCore_T2_02.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.distritos = new SelectList(cboDistritos(), "Nom_distrito", "Nom_distrito", reg.Cod_Distrito);
+                ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
                 return View(await Task.Run(() => reg));
             }
 
             ViewBag.mensaje = mergePropietario(reg);
-            ViewBag.distritos = new SelectList(cboDistritos(), "Nom_distrito", "Nom_distrito", reg.Cod_Distrito);
+            ViewBag.distritos = new SelectList(cboDistritos(), "Cod_distrito", "Nom_distrito", reg.Cod_Distrito);
             return View(await Task.Run(() => reg));
         }
     }
